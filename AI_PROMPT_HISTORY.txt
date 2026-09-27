@@ -1,0 +1,16 @@
+use- (V0.app)
+Prompt-
+ami ekta e-commerce app er jonno ekta modern , order tracking screen banate chai , React js, ar tailwind use kore , only for mobile desing screen , approximately 360-430px width er jonno responsive hote hobe -
+acreen e ei jinishgula takte hobe -
+1)Exta clear visual delivery progress/timeline - 4 ta steaps(proccessing,shipped,out for delivery,delivery) kon step ekon active seta clearly bujha jabe
+2) bortoman status dhekhabo
+3) ekdom heading a Extimated delivery date/time
+4) Order/product summary card (product image, name, quantity, price)
+5) contact supporot er jonno ekta clear button/option
+6) loading, empty, ar error states jekhane dorkar
+7) Meaningful interactions — jemon order details dekha, support e contact kora, delivery issue report kora
+Same design/component diye amake 3 ta different scenario/state o handle korte hobe, mock data diye:
+1-Delayed Order — jekhane estimated delivery time cross hoye geche, delay ta clearly communicate korte hobe ar next step dekhate hobe (jemon contact support)
+2-Delivered but Not Received — system e "Delivered" dekhabe, kintu customer ke ekta option dite hobe "issue report" korar jonno
+3-Tracking Not Available Yet — order confirm hoyeche kintu tracking info ekhono ase nai, ei obostha te ekta friendly empty-state message dekhabe, kono khali/broken page dekhabe na
+kuno backend er prohojon ney dummey data use koro and
