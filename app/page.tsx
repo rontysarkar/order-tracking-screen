@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-type Scenario = 'delayed' | 'delivered' | 'unavailable'
+type Scenario = 'delayed' | 'delivered' | 'unavailable' | 'loading' | 'error'
 
 type OrderData = {
   title: string
@@ -81,6 +81,36 @@ const orders: Record<Scenario, OrderData> = {
     orderId: '#FR-20481',
     message: 'We will send you an update as soon as your package is handed to the carrier.',
   },
+  loading: {
+    title: 'Loading your order',
+    eyebrow: 'Please wait',
+    detail: 'We are fetching the latest delivery updates for you.',
+    tone: 'neutral',
+    step: 0,
+    date: 'Checking delivery estimate',
+    time: 'One moment',
+    product: 'CloudRun Everyday Sneakers',
+    variant: 'Sage / Size 8',
+    quantity: 1,
+    price: '$89.00',
+    orderId: '#FR-20481',
+    message: 'Your order details will appear here shortly.',
+  },
+  error: {
+    title: 'We could not load tracking',
+    eyebrow: 'Something went wrong',
+    detail: 'Your order is safe, but the tracking service is temporarily unavailable.',
+    tone: 'warning',
+    step: 0,
+    date: 'Tracking unavailable',
+    time: 'Please try again',
+    product: 'CloudRun Everyday Sneakers',
+    variant: 'Sage / Size 8',
+    quantity: 1,
+    price: '$89.00',
+    orderId: '#FR-20481',
+    message: 'Retry now or contact support if the issue continues.',
+  },
 }
 
 const steps = [
@@ -121,7 +151,7 @@ export default function Page() {
         </header>
 
         <nav aria-label="Demo scenarios" className="mt-5 flex gap-1.5 overflow-x-auto rounded-2xl bg-[#e7ece7] p-1">
-          {(['delayed', 'delivered', 'unavailable'] as Scenario[]).map((item) => (
+          {(['delayed', 'delivered', 'unavailable', 'loading', 'error'] as Scenario[]).map((item) => (
             <button
               key={item}
               onClick={() => switchScenario(item)}
@@ -132,6 +162,30 @@ export default function Page() {
           ))}
         </nav>
 
+        {scenario === 'loading' ? (
+          <section className="mt-7 flex flex-col gap-4" aria-live="polite" aria-label="Loading order tracking">
+            <div className="h-3 w-28 animate-pulse rounded-full bg-[#dce5de]" />
+            <div className="h-20 w-4/5 animate-pulse rounded-2xl bg-[#dce5de]" />
+            <div className="rounded-[22px] bg-white p-5 shadow-[0_8px_28px_rgba(36,55,42,0.06)]">
+              <div className="h-4 w-36 animate-pulse rounded bg-[#e5ece6]" />
+              <div className="mt-5 h-24 animate-pulse rounded-2xl bg-[#f0f4f0]" />
+              <p className="mt-4 text-center text-xs font-medium text-[#748078]">Loading the latest tracking update...</p>
+            </div>
+          </section>
+        ) : scenario === 'error' ? (
+          <section className="mt-7" aria-live="assertive">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#a06e28]">{order.eyebrow}</p>
+            <h1 className="mt-2 text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] text-[#253029]">{order.title}</h1>
+            <div className="mt-6 rounded-[22px] border border-[#f1d9a6] bg-[#fff8e8] p-5">
+              <div className="flex size-11 items-center justify-center rounded-full bg-[#f7d994] text-[#825d16]"><AlertCircle className="size-5" /></div>
+              <p className="mt-4 text-sm font-bold text-[#344139]">Tracking is temporarily unavailable</p>
+              <p className="mt-2 text-sm leading-6 text-[#69746d]">{order.detail}</p>
+              <Button onClick={() => setScenario('loading')} className="mt-5 h-11 w-full rounded-xl bg-[#315d48] text-sm font-bold text-white hover:bg-[#274d3b]"><RefreshCw data-icon="inline-start" />Retry tracking</Button>
+              <p className="mt-3 text-center text-xs text-[#7d867f]">If this keeps happening, contact support for help.</p>
+            </div>
+          </section>
+        ) : (
+          <>
         <section className="mt-7">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#839088]">{order.eyebrow}</p>
           <h1 className="mt-2 max-w-[330px] text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] text-[#253029]">{order.title}</h1>
@@ -214,6 +268,8 @@ export default function Page() {
         </section>
 
         {scenario === 'delivered' && <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-[11px] text-[#8a948d]"><AlertCircle className="size-3.5" /> We&apos;ll help investigate within 24 hours.</p>}
+          </>
+        )}
       </div>
     </main>
   )
